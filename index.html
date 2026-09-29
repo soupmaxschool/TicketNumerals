@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Number Converter</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 50px auto; padding: 20px; }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
+        .letters { 
+            font-size: 2em; 
+            margin-top: 15px;
+            word-break: break-all;
+        }
+        .words {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+            word-break: break-all;
+        }
+        .legend { 
+            background: #f4f4f4; 
+            padding: 10px; 
+            border-radius: 5px; 
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h2>Number to Ticket Numerals™ Converter</h2>
+    
+    <div class="legend">
+        <strong>Legend:</strong><br>
+        🎟 = Ticket | ✅ = Tick | 🎫 = Golden Ticket
+    </div>
+
+    <input type="number" id="numInput" placeholder="Enter number" min="1">
+    <button onclick="convert()">Convert</button>
+    <div class="letters" id="letters"></div>
+    <div class="words" id="words"></div>
+
+    <script>
+        function convert() {
+            const n = parseInt(document.getElementById('numInput').value) || 0;
+            
+            const lookup = [[10, '🎫', 'golden ticket'], [5, '✅', 'tick'], [1, '🎟', 'ticket']];
+            let letterStr = '';
+            let wordList = [];
+            let remaining = n;
+            
+            for (const [val, char, label] of lookup) {
+                const count = Math.floor(remaining / val);
+                letterStr += char.toLowerCase().repeat(count);
+                for (let i = 0; i < count; i++) {
+                    wordList.push(label);
+                }
+                remaining %= val;
+            }
+            
+            document.getElementById('letters').textContent = letterStr;
+            document.getElementById('words').textContent = wordList.join(' ');
+        }
+
+        document.getElementById('numInput').addEventListener('keypress', e => {
+            if (e.key === 'Enter') convert();
+        });
+    </script>
+</body>
+</html>
